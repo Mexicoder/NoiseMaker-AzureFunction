@@ -23,7 +23,7 @@ namespace Company.Function
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-             log.LogInformation("C# HTTP trigger function *NoiceMaker* processed a request.");
+             log.LogInformation("C# HTTP trigger function *NoiseMaker* processed a request.");
 
             string pass = req.Query["pass"];
             string notfound = req.Query["notfound"];
