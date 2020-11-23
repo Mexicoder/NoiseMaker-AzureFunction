@@ -45,7 +45,7 @@ namespace Company.Function
             else if (servererror == "true")
             {
                 var result = new ObjectResult("I'M ERROR.I..N...G  💣");
-                result.StatusCode = StatusCodes.Status404NotFound;
+                result.StatusCode = StatusCodes.Status500InternalServerError;
                 return result;
             }
             else
