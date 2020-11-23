@@ -23,34 +23,36 @@ namespace Company.Function
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-             log.LogInformation("C# HTTP trigger function *NoiseMaker* processed a request.");
+            log.LogInformation("C# HTTP trigger function *NoiseMaker* processed a request.");
 
             string pass = req.Query["pass"];
             string notfound = req.Query["notfound"];
             string servererror = req.Query["servererror"];
 
+            string resultMessageSuffix = System.Environment.GetEnvironmentVariable("az_response_suffix", EnvironmentVariableTarget.Process);
+
 
             if (pass == "true")
             {
-                var result = new ObjectResult("I'M OK 😁");
+                var result = new ObjectResult($"I'M OK 😁{resultMessageSuffix}");
                 result.StatusCode = StatusCodes.Status200OK;
                 return result;
             }
             else if (notfound == "true")
             {
-                var result = new ObjectResult("I'M NOT FOUND 😲");
+                var result = new ObjectResult($"I'M NOT FOUND 😲{resultMessageSuffix}");
                 result.StatusCode = StatusCodes.Status404NotFound;
                 return result;
             }
             else if (servererror == "true")
             {
-                var result = new ObjectResult("I'M ERROR.I..N...G  💣");
+                var result = new ObjectResult($"I'M ERROR.I..N...G  💣{resultMessageSuffix}");
                 result.StatusCode = StatusCodes.Status500InternalServerError;
                 return result;
             }
             else
             {
-                var result = new ObjectResult("I'M A TEA POT 🍵");
+                var result = new ObjectResult($"I'M A TEA POT 🍵{resultMessageSuffix}");
                 result.StatusCode = StatusCodes.Status418ImATeapot;
                 return result;
             }
