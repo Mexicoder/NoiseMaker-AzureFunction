@@ -27,6 +27,8 @@ namespace Company.Function
 
             string pass = req.Query["pass"];
             string notfound = req.Query["notfound"];
+            string servererror = req.Query["servererror"];
+
 
             if (pass == "true")
             {
@@ -37,6 +39,12 @@ namespace Company.Function
             else if (notfound == "true")
             {
                 var result = new ObjectResult("I'M NOT FOUND 😲");
+                result.StatusCode = StatusCodes.Status404NotFound;
+                return result;
+            }
+            else if (servererror == "true")
+            {
+                var result = new ObjectResult("I'M ERROR.I..N...G  💣");
                 result.StatusCode = StatusCodes.Status404NotFound;
                 return result;
             }
