@@ -30,32 +30,62 @@ namespace Company.Function
             string servererror = req.Query["servererror"];
 
             string resultMessageSuffix = System.Environment.GetEnvironmentVariable("az_response_suffix", EnvironmentVariableTarget.Process);
+            if(!string.IsNullOrEmpty(resultMessageSuffix)){
+                resultMessageSuffix += $" - {DateTime.Now.ToString()}";
+            }
+            
+            string triggerServerError = System.Environment.GetEnvironmentVariable("trigger_server_error", EnvironmentVariableTarget.Process);
+
+            if (string.Equals(triggerServerError, "true"))
+            {
+                return return500ServerError(resultMessageSuffix);
+            }
 
 
             if (pass == "true")
             {
-                var result = new ObjectResult($"I'M OK 😁{resultMessageSuffix}");
-                result.StatusCode = StatusCodes.Status200OK;
-                return result;
+                return return200Ok(resultMessageSuffix);
             }
             else if (notfound == "true")
             {
-                var result = new ObjectResult($"I'M NOT FOUND 😲{resultMessageSuffix}");
-                result.StatusCode = StatusCodes.Status404NotFound;
-                return result;
+                return return404NotFount(resultMessageSuffix);
             }
             else if (servererror == "true")
             {
-                var result = new ObjectResult($"I'M ERROR.I..N...G  💣{resultMessageSuffix}");
-                result.StatusCode = StatusCodes.Status500InternalServerError;
-                return result;
+                return return500ServerError(resultMessageSuffix);
             }
             else
             {
-                var result = new ObjectResult($"I'M A TEA POT 🍵{resultMessageSuffix}");
-                result.StatusCode = StatusCodes.Status418ImATeapot;
-                return result;
+                return return418ImaTeaPot(resultMessageSuffix);
             }
+        }
+
+        private static IActionResult return200Ok(string resultMessageSuffix)
+        {
+            var result = new ObjectResult($"I'M OK 😁{resultMessageSuffix}");
+            result.StatusCode = StatusCodes.Status200OK;
+            return result;
+        }
+
+        private static IActionResult return418ImaTeaPot(string resultMessageSuffix)
+        {
+            var result = new ObjectResult($"I'M A TEA POT 🍵{resultMessageSuffix}");
+            result.StatusCode = StatusCodes.Status418ImATeapot;
+            return result;
+        }
+
+        private static IActionResult return404NotFount(string resultMessageSuffix)
+        {
+            var result = new ObjectResult($"I'M NOT FOUND 😲{resultMessageSuffix}");
+            result.StatusCode = StatusCodes.Status404NotFound;
+            return result;
+        }
+
+        private static IActionResult return500ServerError(string resultMessageSuffix)
+        {
+            var result = new ObjectResult($"I'M ERROR.I..N...G  💣{resultMessageSuffix}");
+            result.StatusCode = StatusCodes.Status500InternalServerError;
+            return result;
         }
     }
 }
